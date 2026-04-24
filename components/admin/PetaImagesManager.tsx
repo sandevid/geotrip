@@ -193,12 +193,12 @@ export function PetaImagesManager({ wisataId }: PetaImagesManagerProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       <div>
         <h3 className="text-lg font-semibold mb-4">Gambar Peta Lokasi</h3>
         
         {/* Upload Files */}
-        <div className="space-y-4 mb-4">
+        <div className="space-y-4 mb-6">
           <div>
             <Label htmlFor="peta-files">Upload Gambar Peta</Label>
             <div className="flex gap-2 mt-2">
@@ -214,6 +214,7 @@ export function PetaImagesManager({ wisataId }: PetaImagesManagerProps) {
               <Button 
                 onClick={handleUpload} 
                 disabled={uploading || selectedFiles.length === 0}
+                className="flex-shrink-0"
               >
                 <Upload className="w-4 h-4 mr-2" />
                 {uploading ? 'Uploading...' : 'Upload'}
@@ -228,7 +229,7 @@ export function PetaImagesManager({ wisataId }: PetaImagesManagerProps) {
           {selectedFiles.length > 0 && (
             <div className="space-y-2">
               <Label>File yang dipilih ({selectedFiles.length})</Label>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {selectedFiles.map((file, index) => (
                   <div
                     key={index}
@@ -237,7 +238,7 @@ export function PetaImagesManager({ wisataId }: PetaImagesManagerProps) {
                     <img
                       src={URL.createObjectURL(file)}
                       alt={file.name}
-                      className="w-12 h-12 object-cover rounded"
+                      className="w-12 h-12 object-cover rounded flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{file.name}</p>
@@ -247,8 +248,9 @@ export function PetaImagesManager({ wisataId }: PetaImagesManagerProps) {
                     </div>
                     <Button
                       variant="ghost"
-                      size="icon-sm"
+                      size="sm"
                       onClick={() => removeSelectedFile(index)}
+                      className="flex-shrink-0 h-8 w-8 p-0"
                     >
                       <X className="w-4 h-4" />
                     </Button>
@@ -269,36 +271,33 @@ export function PetaImagesManager({ wisataId }: PetaImagesManagerProps) {
             images.map((image, index) => (
               <div
                 key={image.id}
-                className="flex items-center gap-3 p-3 bg-white border rounded-lg"
+                className="flex items-center gap-3 p-3 bg-white border rounded-lg hover:shadow-md transition-shadow"
               >
-                <div className="flex flex-col gap-1">
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={() => handleReorder(image.id, 'up')}
-                    disabled={index === 0}
-                  >
-                    <GripVertical className="w-4 h-4" />
-                  </Button>
+                <div className="flex-shrink-0">
+                  <GripVertical className="w-5 h-5 text-gray-400" />
                 </div>
 
-                <img
-                  src={image.image_url}
-                  alt={`Peta ${index + 1}`}
-                  className="w-24 h-24 object-cover rounded"
-                />
+                <div className="flex-shrink-0">
+                  <img
+                    src={image.image_url}
+                    alt={`Peta ${index + 1}`}
+                    className="w-20 h-20 object-cover rounded border"
+                  />
+                </div>
 
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium">Gambar {index + 1}</p>
-                  <p className="text-xs text-gray-500 truncate">{image.image_url}</p>
+                  <p className="text-xs text-gray-500 truncate max-w-xs">{image.image_url}</p>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex-shrink-0 flex items-center gap-2">
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => handleReorder(image.id, 'up')}
                     disabled={index === 0}
+                    title="Pindah ke atas"
+                    className="h-8 w-8 p-0"
                   >
                     ↑
                   </Button>
@@ -307,6 +306,8 @@ export function PetaImagesManager({ wisataId }: PetaImagesManagerProps) {
                     size="sm"
                     onClick={() => handleReorder(image.id, 'down')}
                     disabled={index === images.length - 1}
+                    title="Pindah ke bawah"
+                    className="h-8 w-8 p-0"
                   >
                     ↓
                   </Button>
@@ -314,6 +315,8 @@ export function PetaImagesManager({ wisataId }: PetaImagesManagerProps) {
                     variant="destructive"
                     size="sm"
                     onClick={() => handleDelete(image.id, image.image_url)}
+                    title="Hapus gambar"
+                    className="h-8 w-8 p-0"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
