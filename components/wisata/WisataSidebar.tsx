@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { MapPin, Clock, Ticket } from 'lucide-react';
+import { Instagram, Facebook, Twitter } from 'lucide-react';
+import { SiTiktok } from 'react-icons/si';
 import type { Tables } from '@/lib/types/database';
 
 interface WisataSidebarProps {
@@ -61,6 +63,61 @@ export function WisataSidebar({ wisata }: WisataSidebarProps) {
                   {line.trim()}
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Social Media */}
+        {(wisata.instagram || wisata.facebook || wisata.tiktok || wisata.twitter) && (
+          <div className="pt-6 border-t border-gray-200">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+              Ikuti Kami
+            </p>
+            <div className="flex flex-wrap gap-3">
+              {wisata.instagram && (
+                <a
+                  href={wisata.instagram.startsWith('http') ? wisata.instagram : `https://instagram.com/${wisata.instagram}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 text-white hover:scale-110 transition-transform"
+                  title="Instagram"
+                >
+                  <Instagram className="w-5 h-5" />
+                </a>
+              )}
+              {wisata.facebook && (
+                <a
+                  href={wisata.facebook.startsWith('http') ? wisata.facebook : `https://facebook.com/${wisata.facebook}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white hover:scale-110 transition-transform"
+                  title="Facebook"
+                >
+                  <Facebook className="w-5 h-5" />
+                </a>
+              )}
+              {wisata.tiktok && (
+                <a
+                  href={wisata.tiktok.startsWith('http') ? wisata.tiktok : `https://tiktok.com/@${wisata.tiktok}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white hover:scale-110 transition-transform"
+                  title="TikTok"
+                >
+                  <SiTiktok className="w-5 h-5" />
+                </a>
+              )}
+              {wisata.twitter && (
+                <a
+                  href={wisata.twitter.startsWith('http') ? wisata.twitter : `https://twitter.com/${wisata.twitter}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-sky-500 text-white hover:scale-110 transition-transform"
+                  title="Twitter"
+                >
+                  <Twitter className="w-5 h-5" />
+                </a>
+              )}
             </div>
           </div>
         )}
