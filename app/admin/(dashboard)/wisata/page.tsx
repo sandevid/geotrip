@@ -179,7 +179,7 @@ export default function WisataManagementPage() {
 
       {/* Add/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="!max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="!max-w-4xl max-h-[90vh] overflow-y-auto overflow-x-hidden">
           <DialogHeader>
             <DialogTitle>
               {selectedWisata ? 'Edit Wisata' : 'Tambah Wisata'}
@@ -190,7 +190,9 @@ export default function WisataManagementPage() {
                 : 'Tambahkan destinasi wisata baru'}
             </DialogDescription>
           </DialogHeader>
-          <WisataFormNew wisata={selectedWisata} onSuccess={handleSuccess} />
+          <div className="overflow-x-hidden">
+            <WisataFormNew wisata={selectedWisata} onSuccess={handleSuccess} />
+          </div>
         </DialogContent>
       </Dialog>
 

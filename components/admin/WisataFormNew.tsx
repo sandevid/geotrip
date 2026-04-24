@@ -126,7 +126,7 @@ export function WisataFormNew({ wisata, onSuccess }: WisataFormNewProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-full overflow-x-hidden">
       {/* Basic Information */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
@@ -143,6 +143,7 @@ export function WisataFormNew({ wisata, onSuccess }: WisataFormNewProps) {
               onChange={(e) => handleChange('nama', e.target.value)}
               placeholder="Contoh: Umbul Sidomukti"
               required
+              className="w-full"
             />
           </div>
 

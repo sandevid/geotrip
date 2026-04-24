@@ -22,9 +22,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Kolom 1: Logo & Deskripsi */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-heading font-bold">GeoTrip</h3>
+            <h3 className="text-2xl font-heading font-bold">ZNEK WebGIS</h3>
             <p className="text-white/80 leading-relaxed text-sm">
-              Platform WebGIS untuk menjelajahi destinasi wisata terbaik di Kota Semarang dengan informasi lengkap dan peta interaktif.
+              Layanan informasi Zona Nilai Ekonomi Kawasan berbasis WebGIS pada Kawasan Wisata Umbul Sidomukti dan Sam Poo Kong. Website ini menyediakan informasi wisata, nilai ekonomi, peta interaktif, dan variabel yang memengaruhi kawasan wisata.
             </p>
           </div>
 
@@ -69,16 +69,24 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="text-lg font-heading font-semibold">Kontak</h4>
             <div className="space-y-3 text-sm text-white/80">
-              <p>Kota Semarang, Jawa Tengah</p>
-              <p>Indonesia</p>
-              <p className="pt-2">
+              <div className="flex items-start gap-2">
+                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <p>Jl. Prof Soedarto, Tembalang, Semarang</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
                 <a
-                  href="mailto:info@geotrip.id"
+                  href="mailto:tameinadaundip@gmail.com"
                   className="hover:text-white transition-colors duration-300"
                 >
-                  info@geotrip.id
+                  tameinadaundip@gmail.com
                 </a>
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -86,7 +94,7 @@ export function Footer() {
         {/* Divider */}
         <div className="border-t border-white/10 mt-12 pt-8">
           <p className="text-center text-sm text-white/60">
-            &copy; {currentYear} GeoTrip. Semua hak cipta dilindungi.
+            &copy; {currentYear} ZNEK WebGIS. Semua hak cipta dilindungi.
           </p>
         </div>
       </div>
