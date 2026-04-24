@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { MapPin, Clock, Ticket } from 'lucide-react';
-import { Instagram, Facebook, Twitter } from 'lucide-react';
+import { FaInstagram, FaFacebook, FaTwitter } from 'react-icons/fa';
 import { SiTiktok } from 'react-icons/si';
 import type { Tables } from '@/lib/types/database';
 
@@ -82,7 +82,7 @@ export function WisataSidebar({ wisata }: WisataSidebarProps) {
                   className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 text-white hover:scale-110 transition-transform"
                   title="Instagram"
                 >
-                  <Instagram className="w-5 h-5" />
+                  <FaInstagram className="w-5 h-5" />
                 </a>
               )}
               {wisata.facebook && (
@@ -93,7 +93,7 @@ export function WisataSidebar({ wisata }: WisataSidebarProps) {
                   className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white hover:scale-110 transition-transform"
                   title="Facebook"
                 >
-                  <Facebook className="w-5 h-5" />
+                  <FaFacebook className="w-5 h-5" />
                 </a>
               )}
               {wisata.tiktok && (
@@ -115,7 +115,7 @@ export function WisataSidebar({ wisata }: WisataSidebarProps) {
                   className="flex items-center justify-center w-10 h-10 rounded-full bg-sky-500 text-white hover:scale-110 transition-transform"
                   title="Twitter"
                 >
-                  <Twitter className="w-5 h-5" />
+                  <FaTwitter className="w-5 h-5" />
                 </a>
               )}
             </div>
