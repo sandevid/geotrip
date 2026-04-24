@@ -255,7 +255,7 @@ export function WisataFormNew({ wisata, onSuccess }: WisataFormNewProps) {
         </div>
         
         <div className="space-y-4 pl-7">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="instagram">
                 <span className="inline-flex items-center gap-2">
@@ -270,6 +270,7 @@ export function WisataFormNew({ wisata, onSuccess }: WisataFormNewProps) {
                 value={formData.instagram}
                 onChange={(e) => handleChange('instagram', e.target.value)}
                 placeholder="@username atau URL lengkap"
+                className="max-w-full"
               />
             </div>
 
@@ -287,11 +288,10 @@ export function WisataFormNew({ wisata, onSuccess }: WisataFormNewProps) {
                 value={formData.facebook}
                 onChange={(e) => handleChange('facebook', e.target.value)}
                 placeholder="username atau URL lengkap"
+                className="max-w-full"
               />
             </div>
-          </div>
 
-          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="tiktok">
                 <span className="inline-flex items-center gap-2">
@@ -306,6 +306,7 @@ export function WisataFormNew({ wisata, onSuccess }: WisataFormNewProps) {
                 value={formData.tiktok}
                 onChange={(e) => handleChange('tiktok', e.target.value)}
                 placeholder="@username atau URL lengkap"
+                className="max-w-full"
               />
             </div>
 
@@ -323,6 +324,7 @@ export function WisataFormNew({ wisata, onSuccess }: WisataFormNewProps) {
                 value={formData.twitter}
                 onChange={(e) => handleChange('twitter', e.target.value)}
                 placeholder="@username atau URL lengkap"
+                className="max-w-full"
               />
             </div>
           </div>
