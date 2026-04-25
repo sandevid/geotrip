@@ -1,3 +1,3 @@
 {
-  "buildCommand": "exit 0"
+  "buildCommand": "exit 1"
 }
