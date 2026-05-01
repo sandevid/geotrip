@@ -39,12 +39,6 @@ export function Footer() {
                 Home
               </Link>
               <Link
-                href="/znek"
-                className="text-white/80 hover:text-white transition-colors duration-300 text-sm"
-              >
-                ZNEK
-              </Link>
-              <Link
                 href="/wisata/d4d3f22b-6a42-421a-a9b1-9c0b025845ae"
                 className="text-white/80 hover:text-white transition-colors duration-300 text-sm"
               >

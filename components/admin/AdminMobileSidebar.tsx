@@ -22,7 +22,7 @@ const navItems = [
   { href: '/admin/fasilitas', label: 'Fasilitas', icon: Building2 },
   { href: '/admin/ulasan', label: 'Ulasan', icon: MessageSquare },
   { href: '/admin/galeri', label: 'Galeri', icon: ImageIcon },
-  { href: '/admin/znek', label: 'ZNEK', icon: FileText },
+  { href: '/admin/znek-content', label: 'Konten ZNEK', icon: FileText },
 ];
 
 interface AdminMobileSidebarProps {

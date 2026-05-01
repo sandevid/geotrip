@@ -402,6 +402,7 @@ export function WisataFormNew({ wisata, onSuccess }: WisataFormNewProps) {
               />
             </div>
 
+       
             <div className="space-y-2">
               <Label htmlFor="hpm_max">HPM - Nilai Maksimum</Label>
               <Input

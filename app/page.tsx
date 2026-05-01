@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import WisataCard from '@/components/wisata/WisataCard';
+import { ZnekSection } from '@/components/znek/ZnekSection';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
@@ -305,6 +306,9 @@ export default function Home() {
           )}
         </div>
       </section>
+
+      {/* ZNEK Section */}
+      <ZnekSection />
     </div>
   );
 }

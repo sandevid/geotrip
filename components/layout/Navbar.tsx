@@ -88,7 +88,6 @@ export function Navbar() {
 
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/znek', label: 'Znek' },
     { href: '/wisata/d4d3f22b-6a42-421a-a9b1-9c0b025845ae', label: 'Umbul Sidomukti' },
     { href: '/wisata/e0430c98-0fce-4597-a593-077f723658a4', label: 'Sam Poo Kong' },
     { href: '/fasilitas', label: 'Fasilitas' },

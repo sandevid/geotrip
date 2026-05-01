@@ -344,6 +344,7 @@ export type Database = {
           chart_embed_url: string
           chart_order: number
           created_at: string | null
+          description: string | null
           id: string
           updated_at: string | null
           variabel_type: string
@@ -353,6 +354,7 @@ export type Database = {
           chart_embed_url: string
           chart_order?: number
           created_at?: string | null
+          description?: string | null
           id?: string
           updated_at?: string | null
           variabel_type: string
@@ -362,6 +364,7 @@ export type Database = {
           chart_embed_url?: string
           chart_order?: number
           created_at?: string | null
+          description?: string | null
           id?: string
           updated_at?: string | null
           variabel_type?: string

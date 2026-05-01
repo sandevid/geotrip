@@ -63,7 +63,7 @@ export default function WisataCard({
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.6 }}
-              className="w-full h-full"
+              className="relative w-full h-full"
             >
               <Image
                 src={thumbnailUrl}
@@ -71,6 +71,7 @@ export default function WisataCard({
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                priority={false}
               />
             </motion.div>
           ) : (

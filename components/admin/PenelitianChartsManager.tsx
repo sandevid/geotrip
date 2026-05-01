@@ -38,9 +38,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Plus, Trash2, MoveUp, MoveDown, X } from 'lucide-react';
+import { Plus, Trash2, MoveUp, MoveDown, X, Edit } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Tables } from '@/lib/types/database';
+import { Textarea } from '@/components/ui/textarea';
 
 interface WisataOption {
   id: string;
@@ -60,6 +61,7 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
   const [charts, setCharts] = useState<ChartData[]>([]);
   const [loading, setLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [deleteChartId, setDeleteChartId] = useState<string | null>(null);
   const [availableVariabels, setAvailableVariabels] = useState<string[]>(DEFAULT_VARIABEL_OPTIONS);
 
@@ -68,6 +70,11 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
   const [customVariabel, setCustomVariabel] = useState('');
   const [isCustomVariabel, setIsCustomVariabel] = useState(false);
   const [chartUrls, setChartUrls] = useState<string[]>(['']);
+
+  // Edit state
+  const [editingChart, setEditingChart] = useState<ChartData | null>(null);
+  const [editUrl, setEditUrl] = useState('');
+  const [editDescription, setEditDescription] = useState('');
 
   const supabase = createClient();
 
@@ -119,6 +126,13 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
     setIsCustomVariabel(false);
     setChartUrls(['']);
     setIsDialogOpen(true);
+  }
+
+  function openEditDialog(chart: ChartData) {
+    setEditingChart(chart);
+    setEditUrl(chart.chart_embed_url);
+    setEditDescription(chart.description || '');
+    setIsEditDialogOpen(true);
   }
 
   function addUrlField() {
@@ -177,6 +191,7 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
         variabel_type: variabelToUse,
         chart_embed_url: url.trim(),
         chart_order: nextOrder++,
+        description: null, // Can be added later via edit
       }));
 
       const { error } = await supabase
@@ -192,6 +207,40 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
     } catch (error) {
       console.error(error);
       toast.error('Gagal menyimpan chart');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleEdit() {
+    if (!editingChart) return;
+
+    if (!editUrl.trim()) {
+      toast.error('URL chart harus diisi');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { error } = await supabase
+        .from('wisata_penelitian_charts')
+        .update({
+          chart_embed_url: editUrl.trim(),
+          description: editDescription.trim() || null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', editingChart.id);
+
+      if (error) throw error;
+
+      toast.success('Chart berhasil diupdate');
+      setIsEditDialogOpen(false);
+      setEditingChart(null);
+      fetchCharts();
+    } catch (error) {
+      console.error(error);
+      toast.error('Gagal mengupdate chart');
     } finally {
       setLoading(false);
     }
@@ -319,24 +368,51 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
                       <TableHeader>
                         <TableRow>
                           <TableHead className="w-12">#</TableHead>
-                          <TableHead>URL Embed</TableHead>
-                          <TableHead className="w-32 text-right">Aksi</TableHead>
+                          <TableHead className="w-1/3">URL Embed</TableHead>
+                          <TableHead className="w-1/2">Penjelasan</TableHead>
+                          <TableHead className="w-40 text-right">Aksi</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {varCharts.map((chart, index) => (
                           <TableRow key={chart.id}>
-                            <TableCell className="font-medium">{index + 1}</TableCell>
-                            <TableCell className="max-w-md truncate text-sm text-gray-600">
-                              {chart.chart_embed_url}
+                            <TableCell className="font-medium align-top">{index + 1}</TableCell>
+                            <TableCell className="align-top">
+                              <div className="max-w-xs">
+                                <p className="text-xs text-gray-600 font-mono truncate">
+                                  {chart.chart_embed_url}
+                                </p>
+                              </div>
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="align-top">
+                              {chart.description ? (
+                                <div className="max-w-md">
+                                  <p className="text-sm text-gray-700 line-clamp-3">
+                                    {chart.description}
+                                  </p>
+                                </div>
+                              ) : (
+                                <span className="text-sm text-gray-400 italic">
+                                  Belum ada penjelasan
+                                </span>
+                              )}
+                            </TableCell>
+                            <TableCell className="align-top">
                               <div className="flex items-center justify-end gap-2">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => openEditDialog(chart)}
+                                  title="Edit chart"
+                                >
+                                  <Edit className="w-4 h-4 text-blue-600" />
+                                </Button>
                                 <Button
                                   variant="ghost"
                                   size="sm"
                                   onClick={() => moveChart(chart.id, 'up')}
                                   disabled={index === 0 || loading}
+                                  title="Pindah ke atas"
                                 >
                                   <MoveUp className="w-4 h-4" />
                                 </Button>
@@ -345,6 +421,7 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
                                   size="sm"
                                   onClick={() => moveChart(chart.id, 'down')}
                                   disabled={index === varCharts.length - 1 || loading}
+                                  title="Pindah ke bawah"
                                 >
                                   <MoveDown className="w-4 h-4" />
                                 </Button>
@@ -352,6 +429,7 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
                                   variant="ghost"
                                   size="sm"
                                   onClick={() => setDeleteChartId(chart.id)}
+                                  title="Hapus chart"
                                 >
                                   <Trash2 className="w-4 h-4 text-red-600" />
                                 </Button>
@@ -491,6 +569,107 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Edit Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Chart</DialogTitle>
+            <DialogDescription>
+              Update URL embed dan penjelasan chart penelitian
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            {/* Variabel Type (Read-only) */}
+            <div className="space-y-2">
+              <Label>Variabel</Label>
+              <Input
+                value={editingChart?.variabel_type || ''}
+                disabled
+                className="bg-gray-50"
+              />
+            </div>
+
+            {/* URL Input */}
+            <div className="space-y-2">
+              <Label htmlFor="edit-url">URL Embed Chart</Label>
+              <Input
+                id="edit-url"
+                placeholder="https://docs.google.com/spreadsheets/..."
+                value={editUrl}
+                onChange={(e) => setEditUrl(e.target.value)}
+                className="font-mono text-sm"
+              />
+              <p className="text-xs text-gray-500">
+                Paste URL dari Google Sheets → Chart → Publish chart → Link
+              </p>
+            </div>
+
+            {/* Description Input */}
+            <div className="space-y-2">
+              <Label htmlFor="edit-description">
+                Penjelasan Chart
+                <span className="text-xs text-gray-500 ml-2 font-normal">
+                  (Opsional)
+                </span>
+              </Label>
+              <Textarea
+                id="edit-description"
+                placeholder="Contoh: Diagram ini menunjukkan distribusi frekuensi kunjungan wisatawan berdasarkan survei terhadap 102 responden. Mayoritas responden (37%) melakukan kunjungan 2 kali dalam setahun."
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                rows={6}
+                className="resize-y min-h-[120px] max-h-[300px] w-full"
+                style={{ 
+                  wordBreak: 'break-word', 
+                  overflowWrap: 'break-word',
+                  whiteSpace: 'pre-wrap'
+                }}
+              />
+              <div className="flex items-start gap-2 text-xs text-gray-500 bg-blue-50 border border-blue-200 rounded-md p-3">
+                <svg 
+                  className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
+                  />
+                </svg>
+                <div className="space-y-1 flex-1 min-w-0">
+                  <p className="font-medium text-blue-700 break-words">Tips penjelasan yang baik:</p>
+                  <ul className="list-disc list-inside space-y-0.5 text-blue-600 break-words">
+                    <li className="break-words">Jelaskan apa yang ditampilkan dalam chart</li>
+                    <li className="break-words">Sebutkan jumlah responden atau data yang digunakan</li>
+                    <li className="break-words">Highlight insight atau temuan penting</li>
+                    <li className="break-words">Gunakan bahasa yang mudah dipahami pengunjung</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setIsEditDialogOpen(false);
+                setEditingChart(null);
+              }}
+            >
+              Batal
+            </Button>
+            <Button onClick={handleEdit} disabled={loading}>
+              {loading ? 'Menyimpan...' : 'Simpan Perubahan'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
