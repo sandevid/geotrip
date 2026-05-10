@@ -20,6 +20,8 @@ interface ChartData {
   chart_order: number;
   variabel_type: string;
   description: string | null;
+  chart_width: number | null;
+  chart_height: number | null;
 }
 
 interface PetaImage {
@@ -42,7 +44,7 @@ export function WisataResearch({ penelitian, wisataId }: WisataResearchProps) {
       // Fetch charts
       const { data: chartsData, error: chartsError } = await supabase
         .from('wisata_penelitian_charts')
-        .select('id, chart_embed_url, chart_order, variabel_type, description')
+        .select('id, chart_embed_url, chart_order, variabel_type, description, chart_width, chart_height')
         .eq('wisata_id', wisataId)
         .order('variabel_type')
         .order('chart_order');

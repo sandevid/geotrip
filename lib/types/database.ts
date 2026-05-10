@@ -342,7 +342,9 @@ export type Database = {
       wisata_penelitian_charts: {
         Row: {
           chart_embed_url: string
+          chart_height: number | null
           chart_order: number
+          chart_width: number | null
           created_at: string | null
           description: string | null
           id: string
@@ -352,7 +354,9 @@ export type Database = {
         }
         Insert: {
           chart_embed_url: string
+          chart_height?: number | null
           chart_order?: number
+          chart_width?: number | null
           created_at?: string | null
           description?: string | null
           id?: string
@@ -362,7 +366,9 @@ export type Database = {
         }
         Update: {
           chart_embed_url?: string
+          chart_height?: number | null
           chart_order?: number
+          chart_width?: number | null
           created_at?: string | null
           description?: string | null
           id?: string

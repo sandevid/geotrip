@@ -42,6 +42,7 @@ import { Plus, Trash2, MoveUp, MoveDown, X, Edit } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Tables } from '@/lib/types/database';
 import { Textarea } from '@/components/ui/textarea';
+import { parseChartEmbed } from '@/lib/utils/parse-embed';
 
 interface WisataOption {
   id: string;
@@ -186,13 +187,18 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
         : 0;
 
       // Insert all URLs
-      const insertData = validUrls.map(url => ({
-        wisata_id: selectedWisata,
-        variabel_type: variabelToUse,
-        chart_embed_url: url.trim(),
-        chart_order: nextOrder++,
-        description: null, // Can be added later via edit
-      }));
+      const insertData = validUrls.map(raw => {
+        const parsed = parseChartEmbed(raw);
+        return {
+          wisata_id: selectedWisata,
+          variabel_type: variabelToUse,
+          chart_embed_url: parsed.src,
+          chart_width: parsed.width,
+          chart_height: parsed.height,
+          chart_order: nextOrder++,
+          description: null, // Can be added later via edit
+        };
+      });
 
       const { error } = await supabase
         .from('wisata_penelitian_charts')
@@ -223,13 +229,30 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
     setLoading(true);
 
     try {
+      const parsed = parseChartEmbed(editUrl);
+      // Only update dimensions when the new input actually carries them
+      // (e.g. the admin pasted a full <iframe> snippet). Otherwise keep the
+      // stored dimensions intact — preventing regressions where editing
+      // only the description would null out previously-saved width/height.
+      const updatePayload: {
+        chart_embed_url: string;
+        description: string | null;
+        updated_at: string;
+        chart_width?: number;
+        chart_height?: number;
+      } = {
+        chart_embed_url: parsed.src,
+        description: editDescription.trim() || null,
+        updated_at: new Date().toISOString(),
+      };
+      if (parsed.width && parsed.height) {
+        updatePayload.chart_width = parsed.width;
+        updatePayload.chart_height = parsed.height;
+      }
+
       const { error } = await supabase
         .from('wisata_penelitian_charts')
-        .update({
-          chart_embed_url: editUrl.trim(),
-          description: editDescription.trim() || null,
-          updated_at: new Date().toISOString(),
-        })
+        .update(updatePayload)
         .eq('id', editingChart.id);
 
       if (error) throw error;
@@ -514,29 +537,46 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
               </div>
 
               <div className="space-y-3">
-                {chartUrls.map((url, index) => (
-                  <div key={index} className="flex gap-2">
-                    <Input
-                      placeholder={`URL Chart ${index + 1}`}
-                      value={url}
-                      onChange={(e) => updateUrl(index, e.target.value)}
-                    />
-                    {chartUrls.length > 1 && (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeUrlField(index)}
-                      >
-                        <X className="w-4 h-4 text-red-600" />
-                      </Button>
-                    )}
-                  </div>
-                ))}
+                {chartUrls.map((url, index) => {
+                  const parsed = url.trim() ? parseChartEmbed(url) : null;
+                  return (
+                    <div key={index} className="space-y-1">
+                      <div className="flex gap-2">
+                        <Textarea
+                          placeholder={`URL atau <iframe ...> embed code untuk Chart ${index + 1}`}
+                          value={url}
+                          onChange={(e) => updateUrl(index, e.target.value)}
+                          rows={2}
+                          className="font-mono text-xs resize-y min-h-[60px]"
+                        />
+                        {chartUrls.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeUrlField(index)}
+                          >
+                            <X className="w-4 h-4 text-red-600" />
+                          </Button>
+                        )}
+                      </div>
+                      {parsed && parsed.width && parsed.height && (
+                        <p className="text-xs text-green-600 pl-1">
+                          ✓ Terdeteksi dimensi {parsed.width} × {parsed.height}px
+                        </p>
+                      )}
+                      {parsed && (!parsed.width || !parsed.height) && (
+                        <p className="text-xs text-amber-600 pl-1">
+                          ⚠ Hanya URL yang dideteksi. Untuk hasil terbaik, paste full embed code dari Google Sheets (Sisipkan &gt; Sematkan).
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
 
               <p className="text-xs text-gray-500">
-                Paste URL dari Google Sheets → Chart → Publish chart → Link
+                Paste full <code className="bg-gray-100 px-1 rounded">&lt;iframe&gt;</code> dari Google Sheets &rarr; File &rarr; Bagikan &rarr; Publikasikan ke web &rarr; Tab <b>Sematkan</b>. Kami akan otomatis mendeteksi <code>width</code> &amp; <code>height</code> agar chart tampil penuh tanpa terpotong.
               </p>
             </div>
           </div>
@@ -593,16 +633,39 @@ export function PenelitianChartsManager({ wisataList }: PenelitianChartsManagerP
 
             {/* URL Input */}
             <div className="space-y-2">
-              <Label htmlFor="edit-url">URL Embed Chart</Label>
-              <Input
+              <Label htmlFor="edit-url">URL atau Embed Code Chart</Label>
+              <Textarea
                 id="edit-url"
-                placeholder="https://docs.google.com/spreadsheets/..."
+                placeholder='<iframe width="600" height="371" src="https://docs.google.com/spreadsheets/..."></iframe>'
                 value={editUrl}
                 onChange={(e) => setEditUrl(e.target.value)}
-                className="font-mono text-sm"
+                rows={3}
+                className="font-mono text-xs resize-y min-h-[80px]"
               />
+              {editUrl.trim() && (() => {
+                const parsed = parseChartEmbed(editUrl);
+                if (parsed.width && parsed.height) {
+                  return (
+                    <p className="text-xs text-green-600">
+                      ✓ Dimensi baru terdeteksi: {parsed.width} × {parsed.height}px (akan menggantikan dimensi tersimpan)
+                    </p>
+                  );
+                }
+                if (editingChart?.chart_width && editingChart?.chart_height) {
+                  return (
+                    <p className="text-xs text-gray-500">
+                      Dimensi tersimpan: {editingChart.chart_width} × {editingChart.chart_height}px. Paste ulang full embed code jika ingin mengubahnya.
+                    </p>
+                  );
+                }
+                return (
+                  <p className="text-xs text-amber-600">
+                    ⚠ Dimensi belum tersimpan. Paste full embed code (<code>&lt;iframe ...&gt;</code>) agar chart tampil sesuai ukuran yang Google sarankan.
+                  </p>
+                );
+              })()}
               <p className="text-xs text-gray-500">
-                Paste URL dari Google Sheets → Chart → Publish chart → Link
+                Paste full <code className="bg-gray-100 px-1 rounded">&lt;iframe&gt;</code> dari Google Sheets &rarr; Publikasikan ke web &rarr; <b>Sematkan</b>.
               </p>
             </div>
 
