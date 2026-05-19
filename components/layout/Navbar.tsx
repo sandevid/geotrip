@@ -119,7 +119,7 @@ export function Navbar() {
                 scrolled || !isHomePage ? 'text-primary' : 'text-white'
               }`}
             >
-              GeoTrip
+              JumpoZone
             </span>
           </Link>
 

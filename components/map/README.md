@@ -1,6 +1,6 @@
 # Map Components
 
-This module provides interactive map functionality for the GeoTrip application, displaying tourism destinations and nearby facilities with filtering capabilities.
+This module provides interactive map functionality for the JumpoZone application, displaying tourism destinations and nearby facilities with filtering capabilities.
 
 ## Components
 

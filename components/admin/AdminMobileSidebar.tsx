@@ -53,7 +53,7 @@ export function AdminMobileSidebar({ open, onClose }: AdminMobileSidebarProps) {
                 <LayoutDashboard className="h-5 w-5" />
               </div>
               <div>
-                <h1 className="text-lg font-bold">GeoTrip Admin</h1>
+                <h1 className="text-lg font-bold">JumpoZone Admin</h1>
               </div>
             </Link>
             <Button variant="ghost" size="icon" onClick={onClose}>

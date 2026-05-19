@@ -62,7 +62,7 @@ export function AboutForm({ about, onSuccess }: AboutFormProps) {
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Tentang GeoTrip"
+          placeholder="Tentang JumpoZone"
           required
         />
       </div>

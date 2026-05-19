@@ -1,8 +1,14 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Admin Panel - GeoTrip',
-  description: 'Admin panel untuk mengelola GeoTrip',
+  title: 'Admin Panel — JumpoZone',
+  description: 'Admin panel untuk mengelola JumpoZone',
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: { index: false, follow: false },
+  },
 };
 
 export default function AdminRootLayout({
