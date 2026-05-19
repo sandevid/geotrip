@@ -34,6 +34,8 @@ Dokumen ini menjelaskan **apa yang sudah dipasang** di codebase dan **langkah‑
 | `app/sitemap.ts` | Sitemap dinamis (homepage + `/fasilitas` + setiap `/wisata/[id]` dari Supabase). Statis dengan revalidate 1 jam. |
 | `app/robots.ts` | Allow `/`, disallow `/admin`, `/auth`, `/api`. Daftarkan sitemap. |
 | `app/manifest.ts` | PWA manifest minimal (nama, theme color, icons). |
+| `app/icon.tsx` | Favicon 512×512 di-generate via `next/og` (tab browser + hasil pencarian Google). |
+| `app/apple-icon.tsx` | Apple touch icon 180×180 (iOS home screen). |
 | `app/opengraph-image.tsx` | OG image 1200×630 di-generate via `next/og` (tidak butuh asset PNG). |
 | `app/twitter-image.tsx` | Re-export dari OG image. |
 | `lib/supabase/public.ts` | Klien Supabase read-only untuk sitemap (tanpa `cookies()` → tetap statis). |
@@ -236,6 +238,7 @@ Sebar URL di properti yang sudah sering dirayapi Google:
 - [ ] Google Search Console verified, sitemap submitted, 4 URL utama _Request Indexing_
 - [ ] Rich Results Test tidak menampilkan error pada `/` dan `/wisata/<id>`
 - [ ] Lighthouse SEO score ≥ 95 (cek via Chrome DevTools atau PageSpeed)
+- [ ] Favicon muncul di tab browser (cek `https://jumpozone.my.id/icon` membuka PNG 512×512)
 - [ ] Konten Umbul Sidomukti & Sam Poo Kong sudah final di admin (deskripsi panjang, foto, jam, tiket)
 - [ ] Backlink awal disebar (medsos / Medium / komunitas)
 

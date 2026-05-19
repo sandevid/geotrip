@@ -79,11 +79,8 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
-  },
+  // Icons di-generate dari `app/icon.tsx` dan `app/apple-icon.tsx`
+  // (file convention). Next.js auto-inject tag <link> yang sesuai.
   manifest: "/manifest.webmanifest",
   ...(GOOGLE_VERIFICATION
     ? { verification: { google: GOOGLE_VERIFICATION } }
