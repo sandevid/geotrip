@@ -271,6 +271,11 @@ export default async function WisataDetailPage({
                             Rp {wisata.duv_value.toLocaleString('id-ID')}
                           </p>
                         </div>
+                        {wisata.tcm_penjelasan && (
+                          <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+                            {wisata.tcm_penjelasan}
+                          </p>
+                        )}
                       </div>
                     )}
 
@@ -289,6 +294,11 @@ export default async function WisataDetailPage({
                             Rp {wisata.ev_value.toLocaleString('id-ID')}
                           </p>
                         </div>
+                        {wisata.cvm_penjelasan && (
+                          <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+                            {wisata.cvm_penjelasan}
+                          </p>
+                        )}
                       </div>
                     )}
 
@@ -308,6 +318,11 @@ export default async function WisataDetailPage({
                             {wisata.hpm_max?.toLocaleString('id-ID') || '0'}
                           </p>
                         </div>
+                        {wisata.hpm_penjelasan && (
+                          <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+                            {wisata.hpm_penjelasan}
+                          </p>
+                        )}
                       </div>
                     )}
 
@@ -326,6 +341,11 @@ export default async function WisataDetailPage({
                             Rp {wisata.tev_value.toLocaleString('id-ID')}
                           </p>
                         </div>
+                        {wisata.tev_penjelasan && (
+                          <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+                            {wisata.tev_penjelasan}
+                          </p>
+                        )}
                       </div>
                     )}
                   </div>

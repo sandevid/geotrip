@@ -59,6 +59,12 @@ export function WisataFormNew({ wisata, onSuccess }: WisataFormNewProps) {
     tev_value: wisata?.tev_value ? wisata.tev_value.toLocaleString('id-ID') : '',
     hpm_min: wisata?.hpm_min ? wisata.hpm_min.toLocaleString('id-ID') : '',
     hpm_max: wisata?.hpm_max ? wisata.hpm_max.toLocaleString('id-ID') : '',
+    
+    // Economic Explanations
+    tcm_penjelasan: wisata?.tcm_penjelasan || '',
+    cvm_penjelasan: wisata?.cvm_penjelasan || '',
+    hpm_penjelasan: wisata?.hpm_penjelasan || '',
+    tev_penjelasan: wisata?.tev_penjelasan || '',
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -99,6 +105,10 @@ export function WisataFormNew({ wisata, onSuccess }: WisataFormNewProps) {
         tev_value: formData.tev_value ? parseFloat(parseFormattedNumber(formData.tev_value)) : null,
         hpm_min: formData.hpm_min ? parseFloat(parseFormattedNumber(formData.hpm_min)) : null,
         hpm_max: formData.hpm_max ? parseFloat(parseFormattedNumber(formData.hpm_max)) : null,
+        tcm_penjelasan: formData.tcm_penjelasan.trim() || null,
+        cvm_penjelasan: formData.cvm_penjelasan.trim() || null,
+        hpm_penjelasan: formData.hpm_penjelasan.trim() || null,
+        tev_penjelasan: formData.tev_penjelasan.trim() || null,
       };
 
       if (wisata) {
@@ -346,36 +356,87 @@ export function WisataFormNew({ wisata, onSuccess }: WisataFormNewProps) {
         </div>
         
         <div className="space-y-4 pl-7">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="duv_value">DUV - Direct Use Value (TCM)</Label>
-              <Input
-                id="duv_value"
-                type="text"
-                value={formData.duv_value}
-                onChange={(e) => handleNumberChange('duv_value', e.target.value)}
-                placeholder="5.900.000"
-              />
-              <p className="text-xs text-muted-foreground">
-                Travel Cost Method - Nilai Guna Langsung
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="ev_value">EV - Existence Value (CVM)</Label>
-              <Input
-                id="ev_value"
-                type="text"
-                value={formData.ev_value}
-                onChange={(e) => handleNumberChange('ev_value', e.target.value)}
-                placeholder="335.400.000"
-              />
-              <p className="text-xs text-muted-foreground">
-                Contingent Valuation Method - Nilai Keberadaan
-              </p>
-            </div>
+          {/* TCM */}
+          <div className="space-y-2">
+            <Label htmlFor="duv_value">DUV - Direct Use Value (TCM)</Label>
+            <Input
+              id="duv_value"
+              type="text"
+              value={formData.duv_value}
+              onChange={(e) => handleNumberChange('duv_value', e.target.value)}
+              placeholder="5.900.000"
+            />
+            <p className="text-xs text-muted-foreground">
+              Travel Cost Method - Nilai Guna Langsung
+            </p>
+            <Textarea
+              id="tcm_penjelasan"
+              value={formData.tcm_penjelasan}
+              onChange={(e) => handleChange('tcm_penjelasan', e.target.value)}
+              placeholder="Jelaskan mengenai metode Travel Cost Method (TCM) pada wisata ini..."
+              rows={3}
+            />
           </div>
 
+          {/* CVM */}
+          <div className="space-y-2">
+            <Label htmlFor="ev_value">EV - Existence Value (CVM)</Label>
+            <Input
+              id="ev_value"
+              type="text"
+              value={formData.ev_value}
+              onChange={(e) => handleNumberChange('ev_value', e.target.value)}
+              placeholder="335.400.000"
+            />
+            <p className="text-xs text-muted-foreground">
+              Contingent Valuation Method - Nilai Keberadaan
+            </p>
+            <Textarea
+              id="cvm_penjelasan"
+              value={formData.cvm_penjelasan}
+              onChange={(e) => handleChange('cvm_penjelasan', e.target.value)}
+              placeholder="Jelaskan mengenai metode Contingent Valuation Method (CVM) pada wisata ini..."
+              rows={3}
+            />
+          </div>
+
+          {/* HPM */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="hpm_min">HPM - Nilai Minimum</Label>
+              <Input
+                id="hpm_min"
+                type="text"
+                value={formData.hpm_min}
+                onChange={(e) => handleNumberChange('hpm_min', e.target.value)}
+                placeholder="4.000"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="hpm_max">HPM - Nilai Maksimum</Label>
+              <Input
+                id="hpm_max"
+                type="text"
+                value={formData.hpm_max}
+                onChange={(e) => handleNumberChange('hpm_max', e.target.value)}
+                placeholder="4.157"
+              />
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground -mt-2">
+            Hedonic Pricing Method - Interval nilai properti
+          </p>
+          <div className="space-y-2">
+            <Textarea
+              id="hpm_penjelasan"
+              value={formData.hpm_penjelasan}
+              onChange={(e) => handleChange('hpm_penjelasan', e.target.value)}
+              placeholder="Jelaskan mengenai metode Hedonic Pricing Method (HPM) pada wisata ini..."
+              rows={3}
+            />
+          </div>
+
+          {/* TEV */}
           <div className="space-y-2">
             <Label htmlFor="tev_value">TEV - Total Economic Value</Label>
             <Input
@@ -388,35 +449,14 @@ export function WisataFormNew({ wisata, onSuccess }: WisataFormNewProps) {
             <p className="text-xs text-muted-foreground">
               Total Economic Value (DUV + EV)
             </p>
+            <Textarea
+              id="tev_penjelasan"
+              value={formData.tev_penjelasan}
+              onChange={(e) => handleChange('tev_penjelasan', e.target.value)}
+              placeholder="Jelaskan mengenai Total Economic Value (TEV) pada wisata ini..."
+              rows={3}
+            />
           </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="hpm_min">HPM - Nilai Minimum</Label>
-              <Input
-                id="hpm_min"
-                type="text"
-                value={formData.hpm_min}
-                onChange={(e) => handleNumberChange('hpm_min', e.target.value)}
-                placeholder="4.000"
-              />
-            </div>
-
-       
-            <div className="space-y-2">
-              <Label htmlFor="hpm_max">HPM - Nilai Maksimum</Label>
-              <Input
-                id="hpm_max"
-                type="text"
-                value={formData.hpm_max}
-                onChange={(e) => handleNumberChange('hpm_max', e.target.value)}
-                placeholder="4.157"
-              />
-            </div>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Hedonic Pricing Method - Interval nilai properti
-          </p>
         </div>
       </div>
 

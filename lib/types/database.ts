@@ -210,6 +210,7 @@ export type Database = {
         Row: {
           alamat: string
           created_at: string
+          cvm_penjelasan: string | null
           deskripsi: string
           duv_value: number | null
           ev_value: number | null
@@ -217,12 +218,15 @@ export type Database = {
           harga_tiket: string | null
           hpm_max: number | null
           hpm_min: number | null
+          hpm_penjelasan: string | null
           id: string
           instagram: string | null
           jam_buka: string | null
           latitude: number
           longitude: number
           nama: string
+          tcm_penjelasan: string | null
+          tev_penjelasan: string | null
           tev_value: number | null
           tiktok: string | null
           twitter: string | null
@@ -231,6 +235,7 @@ export type Database = {
         Insert: {
           alamat: string
           created_at?: string
+          cvm_penjelasan?: string | null
           deskripsi: string
           duv_value?: number | null
           ev_value?: number | null
@@ -238,12 +243,15 @@ export type Database = {
           harga_tiket?: string | null
           hpm_max?: number | null
           hpm_min?: number | null
+          hpm_penjelasan?: string | null
           id?: string
           instagram?: string | null
           jam_buka?: string | null
           latitude: number
           longitude: number
           nama: string
+          tcm_penjelasan?: string | null
+          tev_penjelasan?: string | null
           tev_value?: number | null
           tiktok?: string | null
           twitter?: string | null
@@ -252,6 +260,7 @@ export type Database = {
         Update: {
           alamat?: string
           created_at?: string
+          cvm_penjelasan?: string | null
           deskripsi?: string
           duv_value?: number | null
           ev_value?: number | null
@@ -259,12 +268,15 @@ export type Database = {
           harga_tiket?: string | null
           hpm_max?: number | null
           hpm_min?: number | null
+          hpm_penjelasan?: string | null
           id?: string
           instagram?: string | null
           jam_buka?: string | null
           latitude?: number
           longitude?: number
           nama?: string
+          tcm_penjelasan?: string | null
+          tev_penjelasan?: string | null
           tev_value?: number | null
           tiktok?: string | null
           twitter?: string | null
